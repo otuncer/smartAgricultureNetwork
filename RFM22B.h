@@ -1,2 +1,14 @@
 // RFM22B definitions
+#define RFM22B_NOMCARFREQ0 0x77
+#define RFM22B_NOMCARFREQ1 0x76
+#define RFM22B_FBANDSELECT 0x75
+#define RFM22B_FDEVIATION  0x72
+#define RFM22B_MODCTRL2    0x71
+#define RFM22B_TXDATAR0    0x6F
+#define RFM22B_TXDATAR1    0x6E
+#define RFM22B_CHKHDR3     0x3F
+#define RFM22B_TXPKTLEN    0x3E
+#define RFM22B_TXHDR3      0x3A
+#define RFM22B_SYNWRD2     0x37
+#define RFM22B_SYNWRD3     0x36     
 
