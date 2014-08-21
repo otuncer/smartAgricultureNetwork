@@ -14,7 +14,7 @@
 #error NSEL required for spi.h
 #endif
 
-int8 _read8bit()
+int8 _SPIread8bit()
 {
    int8 n=8;
    int8 result=0;
@@ -29,7 +29,7 @@ int8 _read8bit()
    return result;
 }
 
-void _write8bit(int8 data)
+void _SPIwrite8bit(int8 data)
 {
    int8 n=8;
    while(n--)
@@ -45,23 +45,23 @@ void _write8bit(int8 data)
    output_low(SCK);
 }
 
-void spiWrite(int8 address, int8 data)
+void SPIWrite(int8 address, int8 data)
 {
    address|= 0x80;
    output_high(NSEL);
    output_low(NSEL);   
-   _write8bit(address);
-   _write8bit(data);   
+   _SPIwrite8bit(address);
+   _SPIwrite8bit(data);   
    output_high(NSEL);
 }
 
-int8 spiRead(int8 address)
+int8 SPIRead(int8 address)
 {
    int8 data;
    output_high(NSEL);
    output_low(NSEL);   
-   _write8bit(address);
-   data = _read8bit();   
+   _SPIwrite8bit(address);
+   data = _SPIread8bit();   
    output_high(NSEL);
    return data;
 }
