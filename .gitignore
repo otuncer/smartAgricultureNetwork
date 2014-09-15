@@ -4,6 +4,8 @@
 *.esym
 *.hex
 *.lst
+*.o
+*.osym
 *.pjt
 *.sta
 *.sym
