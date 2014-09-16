@@ -19,6 +19,6 @@ int8 SPIRead(int8 address);
 #ifndef SDI
    #error SDI required for spi.h
 #endif
-#ifndef NSEL
-   #error NSEL required for spi.h
+#ifndef CSN
+   #error CSN required for spi.h
 #endif

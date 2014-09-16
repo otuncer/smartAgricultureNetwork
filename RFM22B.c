@@ -6,7 +6,7 @@ void RFM22Bsendfifo(int8* data)
    SPIWrite(RFM22B_FIFO, *data);
 }
 
-void RFM22Breadfifo(int8* data)
+int8 RFM22Breadfifo(int8* data)
 {
    return SPIRead(RFM22B_FIFO); 
 } 
@@ -65,11 +65,6 @@ int1 RFM22BisValidPacket()
       return false;
    else
       return true;
-}
-
-void RFM22BgetRSSI()
-{
-   RSSI = SPIRead(RFM22B_RSSI);
 }
 
 void RFM22Bsetup(int1 isReceiver)

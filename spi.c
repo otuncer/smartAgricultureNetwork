@@ -26,7 +26,7 @@ void _SPIwriteByte(int8 data)
       else 
         output_bit(SDI,0);
       output_high(SCK);     
-       data = data << 1; 
+      data = data << 1; 
    }
    output_low(SCK);
 }
@@ -34,20 +34,20 @@ void _SPIwriteByte(int8 data)
 void SPIWrite(int8 address, int8 data)
 {
    address|= 0x80;
-   output_high(NSEL);
-   output_low(NSEL);   
-   _SPIwrite8bit(address);
-   _SPIwrite8bit(data);   
-   output_high(NSEL);
+   output_high(CSN);
+   output_low(CSN);   
+   _SPIwriteByte(address);
+   _SPIwriteByte(data);   
+   output_high(CSN);
 }
 
 int8 SPIRead(int8 address)
 {
    int8 data;
-   output_high(NSEL);
-   output_low(NSEL);   
-   _SPIwrite8bit(address);
-   data = _SPIread8bit();   
-   output_high(NSEL);
+   output_high(CSN);
+   output_low(CSN);   
+   _SPIwriteByte(address);
+   data = _SPIreadByte();   
+   output_high(CSN);
    return data;
 }
