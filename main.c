@@ -1,7 +1,12 @@
 #include "main.h"
-#include "spi.c"
-#include "RFM22B.c"
-#include "settings.h"
+//#include "spi.c"
+//#include "RFM22B.c"
+//#include "settings.h"
+#include "communication_r_v2.h"
+
+#use fast_io(a)
+#use fast_io(b)
+#use fast_io(c)
 
 void initRFM();
 
@@ -11,7 +16,7 @@ void main()
    int8 i;
    
    setup_adc_ports(NO_ANALOGS|VSS_VDD);
-   setup_adc(ADC_CLOCK_DIV_2);
+   setup_adc(ADC_OFF);
    setup_spi(SPI_SS_DISABLED);
    setup_wdt(WDT_OFF);
    setup_timer_0(RTCC_INTERNAL);
@@ -19,8 +24,10 @@ void main()
    setup_timer_2(T2_DISABLED,0,1);
    setup_comparator(NC_NC_NC_NC);
    setup_vref(FALSE);
-//Setup_Oscillator parameter not selected from Intr Oscillator Config tab
-  
+   
+   set_tris_a(0x00);
+   set_tris_b(0b11110001);
+   set_tris_c(0b10111111);
   
    output_high(pin_a0);
    delay_ms(1000);
@@ -28,13 +35,17 @@ void main()
    delay_ms(1000);
    
    //initRFM();
-   a = SPIRead(0x25);
-   output_high(pin_a0);
-   delay_ms(1000);
-   output_low(pin_a0);
-   delay_ms(1000);
+   //SPIWrite(0x25, 0xAA);
+   a = SPIRead(0x76);
+   //output_high(pin_a0);
+   //delay_ms(1000);
+   //output_low(pin_a0);
+   //delay_ms(1000);
    for(i = 0; i < 8; i++){
-      output_bit(pin_a0, a & 0x80 );
+      if((a & 0x80) == 0)
+         output_low(pin_a0);
+      else
+         output_high(pin_a0);
       a <<= 1;
       delay_ms(1000);
    }
@@ -62,7 +73,7 @@ void main()
    //duz: 0001 1100
    
 }
-
+/*
 void initRFM()
 {
    delay_ms(20);           //wait for POR
@@ -79,7 +90,7 @@ void initRFM()
    spiWrite(0x7A, 0x05);   //Freq hopping step size = 50kHz
    
    
-   ///***TABLE DATA***///
+   /// TABLE DATA ///
    spiWrite(0x1C, 0x05); //
    spiWrite(0x20, 0x50); //
    spiWrite(0x21, 0x01); //
@@ -104,4 +115,4 @@ void initRFM()
    spiWrite(0x76, 0x65);   //NOMINAL CARRIER FREQ: +4MHz
    spiWrite(0x77, 0xC0);   //... 
 
-}
+}*/
