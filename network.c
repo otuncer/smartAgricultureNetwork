@@ -3,6 +3,9 @@
 
 int1 sendPacket(int8 *msg, int16 destID, int1 waitACK)
 {
+    //send message to fifo
+    RFM22Bsendfifo(msg);
+
 	//TODO:
 	//-send message, wait for ack if necessary
 }

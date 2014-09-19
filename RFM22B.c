@@ -3,12 +3,20 @@
 
 void RFM22Bsendfifo(int8* data)
 {
-   SPIWrite(RFM22B_FIFO, *data);
+   int8 byteData;
+   for(int i = 0; i < PACKET_SIZE; i++){
+      byteData = data[i];
+      SPIWrite(RFM22B_FIFO, byteData);
+   }
 }
 
-int8 RFM22Breadfifo(int8* data)
+int8* RFM22Breadfifo()
 {
-   return SPIRead(RFM22B_FIFO); 
+   int8 *data = (int8*)malloc(PACKET_SIZE * sizeof(int8));
+   for(int i = 0; i < PACKET_SIZE; i++){
+      data[i] = SPIRead(RFM22B_FIFO); 
+   }
+   return data;
 } 
 
 /*

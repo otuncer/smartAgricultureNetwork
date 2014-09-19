@@ -2,8 +2,8 @@
 
 #include "settings.h"
 
-void RFM22Bsendfifo(int8 data);
-int8 RFM22Breadfifo();
+void RFM22Bsendfifo(int8* data);
+int8* RFM22Breadfifo();
 
 void RFM22Btxon();
 void RFM22Brxon();
@@ -55,7 +55,3 @@ void RFM22Bsetup(int1 isReceiver);
 #define RFM22B_NOMCARFREQ0  0x77
 #define RFM22B_FRQCHANNEL   0x79
 #define RFM22B_FIFO         0x7F
-
-#ifndef MODULE_ID
-   #error MODULE_ID is not defined
-#endif
