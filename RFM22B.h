@@ -7,17 +7,20 @@ int8* RFM22Breadfifo();
 
 void RFM22Btxon();
 void RFM22Brxon();
-void RFM22BtoIdle();
+void RFM22BtoReady();
 
 void RFM22BclearFifos();
 void RFM22BclearFlags();
+
+void RFM22BsetDest(int8 addr);
+int8 RFM22BgetSourceAddr();
 
 int1 RFM22BisSyncWord();
 int1 RFM22BisValidPacket();
 
 void RFM22BgetRSSI();
 
-void RFM22Bsetup(int1 isReceiver);
+void RFM22Bsetup(int1 isMaster);
 
 #define RFM22B_INTSTAT1     0x03
 #define RFM22B_INTSTAT2     0x04
@@ -42,8 +45,11 @@ void RFM22Bsetup(int1 isReceiver);
 #define RFM22B_SYNWRD3      0x36
 #define RFM22B_SYNWRD2      0x37
 #define RFM22B_TXHEADER3    0x3A
+#define RFM22B_TXHEADER2    0x3B
 #define RFM22B_TXPKTLEN     0x3E
 #define RFM22B_CHKHEADER3   0x3F
+#define RFM22B_CHKHEADER2   0x40
+#define RFM22B_RCVHEADER2   0x48
 #define RFM22B_TXPWR        0x6D
 #define RFM22B_TXDATARATE1  0x6E
 #define RFM22B_TXDATARATE0  0x6F

@@ -11,6 +11,6 @@
    #define CSN pin_b1   //SPI communication CSN pin
    #define SDO pin_b4   //SPI input of PIC
    
-   #define PACKET_SIZE 4 //in bytes
+   #define DATA_SIZE 4 //in bytes
    
 #endif

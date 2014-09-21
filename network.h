@@ -3,22 +3,17 @@
 #include "settings.h"
 
 //sends given packet
+//puts the module to ready mode at return
 // @msg msg to send
 // @destID destination module ID
 // @waitACK waits for acknowledgement
 // @return false if not successful
-int1 sendPacket(int8 *msg, int16 destID, int1 waitACK);
+int1 sendPacket(int8 *msg, int8 destAddr, int1 waitACK);
 
 //reads packet to msg
+//puts the module to ready mode at return
+//memory should be freed from "msg" after return
 // @msg address to write packet
 // @ack ACK message to send
 //		if NULL, does not send ACK, sendPacket() should be used manually
-// @return false if not successful
-int1 readPacket(int8 *msg, int8* ack);
-
-#ifndef NIRQ
-	#error NIRQ not defined
-#endif
-#ifndef PACKET_SIZE
-	#error PACKET_SIZE not defined
-#endif
+void readPacket(int8 *msg, int8* ack);
