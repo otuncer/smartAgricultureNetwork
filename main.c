@@ -62,29 +62,19 @@ void main()
    a[2]=0x45;
    a[3]=0x67;
    while(1) {
-      mybool = sendPacket(a, 2, 0);
-    /*  if(mybool){
+      mybool = sendPacket(a, 2, 1);
+      if(mybool){
          output_high(pin_a0);
       } else {
          output_low(pin_a0);
       }
-      delay_ms(1000);*/
+      delay_ms(500);
    }
 #else
    while(1) {
       RFM22Brxon();
-      delay_ms(1000);
-      if(input(NIRQ) == 0){
-         readPacket(a, NULL);
-         putc(a[0]);
-         putc(a[1]);
-         putc(a[2]);
-         putc(a[3]);
-         putc(0);
-      } else {
-         putc(0x11);
-         putc(0x00);
-      }
+      while(input(NIRQ));
+      readPacket(a, a);
    }
 
 #endif
