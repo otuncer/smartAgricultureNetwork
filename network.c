@@ -37,11 +37,11 @@ int1 sendPacket(int8 *msg, int8 destAddr, int1 waitACK)
 void readPacket(int8 *msg, int8 *ack)
 {
     int8 srcAddr;
-    msg = RFM22Breadfifo();
+    RFM22Breadfifo(msg);
 
     if(ack != NULL){
         srcAddr = RFM22BgetSourceAddr();
-        sendPacket(ack, srcAddr, 0)
+        sendPacket(ack, srcAddr, 0);
     }
 
     RFM22BclearFlags();

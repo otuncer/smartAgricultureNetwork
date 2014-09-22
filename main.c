@@ -2,17 +2,92 @@
 #include "spi.c"
 #include "RFM22B.c"
 #include "settings.h"
+#include "network.c"
+#include "stdlib.h"
 
-#use fast_io(a)
-#use fast_io(b)
-#use fast_io(c)
-
-void initRFM();
+void init();
 
 void main()
 {
    int8 a;
    int8 i;
+
+   init();
+  
+   output_high(pin_a0);
+   delay_ms(1000);
+   output_low(pin_a0);
+   delay_ms(1000);
+   output_high(pin_a0);
+   delay_ms(1000);
+   output_low(pin_a0);
+   delay_ms(1000);
+ 
+   /* //MODULE TESTER
+   a = SPIRead(0x23);
+   for(i = 0; i < 8; i++){
+      if((a & 0x80) == 0)
+         output_low(pin_a0);
+      else
+         output_high(pin_a0);
+      a <<= 1;
+      delay_ms(1000);
+      
+   }
+   while (1){
+      output_high(pin_a0);
+      delay_ms(100);
+      output_low(pin_a0);
+      delay_ms(100);
+   }*/
+   /* RS232 TESTER
+   while(1){
+      putc(0xAB);
+      delay_ms(1000);
+      a=getc();
+      for(i = 0; i < 8; i++){
+         if((a & 0x80) == 0)
+            output_low(pin_a0);
+         else
+            output_high(pin_a0);
+         a <<= 1;
+         delay_ms(1000);
+      }
+   }*/
+  
+#if MODULE_ID==0 //master node
+   a=0xAB;
+   while(1) {
+      sendPacket(&a, 2, 0);
+      delay_ms(1000);
+   }
+#else
+   while(1) {
+      RFM22Brxon();
+      delay_ms(1000);
+      if(input(NIRQ) == 0){
+         readPacket(&a, NULL);
+         if(a == 0xAB){
+            output_high(pin_a0);
+         } else {
+            putc(a);
+            putc(0);
+         }
+      } else {
+         putc(0x11);
+         putc(0x00);
+      }
+   }
+
+#endif
+   
+}
+
+void init()
+{
+   set_tris_a(0x00);
+   set_tris_b(0b11110001);
+   set_tris_c(0b10111111);
    
    setup_adc_ports(NO_ANALOGS|VSS_VDD);
    setup_adc(ADC_OFF);
@@ -24,51 +99,5 @@ void main()
    setup_comparator(NC_NC_NC_NC);
    setup_vref(FALSE);
    
-   set_tris_a(0x00);
-   set_tris_b(0b11110001);
-   set_tris_c(0b10111111);
-  
-   output_high(pin_a0);
-   delay_ms(1000);
-   output_low(pin_a0);
-   delay_ms(1000);
-   
-   //initRFM();
-   //SPIWrite(0x25, 0xAA);
-   a = SPIRead(0x76);
-   //output_high(pin_a0);
-   //delay_ms(1000);
-   //output_low(pin_a0);
-   //delay_ms(1000);
-   for(i = 0; i < 8; i++){
-      if((a & 0x80) == 0)
-         output_low(pin_a0);
-      else
-         output_high(pin_a0);
-      a <<= 1;
-      delay_ms(1000);
-   }
-   while(1){/*
-      output_high(SCK);
-      output_high(SDI);
-      output_high(CSN);
-      output_bit(pin_a0, SDO );
-      delay_ms(1000);
-      output_low(SCK);
-      output_low(SDI);
-      output_low(CSN);
-      output_bit(pin_a0, SDO );
-      delay_ms(1000);*/
-   
-   
-   
-   
-      output_high(pin_a0);
-      delay_ms(100);
-      output_low(pin_a0); 
-      delay_ms(100);
-   }
-   
-   //duz: 0001 1100
-   
+   RFM22Bsetup();
 }

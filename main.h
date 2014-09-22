@@ -21,7 +21,7 @@
 #FUSES NOEBTR                   //Memory not protected from table reads
 #FUSES NOEBTRB                  //Boot block not protected from table reads
 #FUSES NOCPB                    //No Boot Block code protection
-#FUSES NOMCLR                     //Master Clear pin disabled
+#FUSES NOMCLR                   //Master Clear pin disabled
 #FUSES LPT1OSC                  //Timer1 configured for low-power operation
 #FUSES NOXINST                  //Extended set extension and Indexed Addressing mode disabled (Legacy mode)
 #FUSES PLL1                     //No PLL PreScaler
@@ -30,4 +30,8 @@
 #FUSES NOVREGEN                 //USB voltage regulator disabled
 
 #use delay(clock=20000000)
-#use rs232(baud=115200,parity=E,xmit=PIN_C6,rcv=PIN_C7,bits=8,stop=1)
+#use rs232(baud=9600,parity=E,xmit=PIN_C6,rcv=PIN_C7,bits=8,stop=1)
+
+#use fast_io(a)
+#use fast_io(b)
+#use fast_io(c)
