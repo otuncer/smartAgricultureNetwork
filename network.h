@@ -6,9 +6,10 @@
 //puts the module to ready mode at return
 // @msg msg to send
 // @destID destination module ID
-// @waitACK waits for acknowledgement
+// @ack pointer for ack
 // @return false if not successful
-int1 sendPacket(int8 *msg, int8 destAddr, int1 waitACK);
+void sendPacket(int8 *msg, int8 destAddr);
+int1 sendPacket(int8 *msg, int8 destAddr, int8 *ack);
 
 //reads packet to msg
 //puts the module to ready mode at return

@@ -10,7 +10,7 @@ void init();
 void main()
 {
    int8 a[4];
-   int8 i;
+   int8 b[4];
    int1 mybool;
 
    init();
@@ -62,19 +62,26 @@ void main()
    a[2]=0x45;
    a[3]=0x67;
    while(1) {
-      mybool = sendPacket(a, 2, 1);
+      mybool = sendPacket(b, 2, a);
       if(mybool){
-         output_high(pin_a0);
+         putc(a[0]);
+         putc(a[1]);
+         putc(a[2]);
+         putc(a[3]);
       } else {
-         output_low(pin_a0);
+         putc(0x00);
       }
       delay_ms(500);
    }
 #else
    while(1) {
+      a[0]=0x89;
+      a[1]=0xAB;
+      a[2]=0xCD;
+      a[3]=0xEF;
       RFM22Brxon();
       while(input(NIRQ));
-      readPacket(a, a);
+      readPacket(b, a);
    }
 
 #endif
