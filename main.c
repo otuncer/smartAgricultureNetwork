@@ -9,8 +9,9 @@ void init();
 
 void main()
 {
-   int8 a;
+   int8 a[4];
    int8 i;
+   int1 mybool;
 
    init();
   
@@ -56,23 +57,30 @@ void main()
    }*/
   
 #if MODULE_ID==0 //master node
-   a=0xAB;
+   a[0]=0x01;
+   a[1]=0x23;
+   a[2]=0x45;
+   a[3]=0x67;
    while(1) {
-      sendPacket(&a, 2, 0);
-      delay_ms(1000);
+      mybool = sendPacket(a, 2, 0);
+    /*  if(mybool){
+         output_high(pin_a0);
+      } else {
+         output_low(pin_a0);
+      }
+      delay_ms(1000);*/
    }
 #else
    while(1) {
       RFM22Brxon();
       delay_ms(1000);
       if(input(NIRQ) == 0){
-         readPacket(&a, NULL);
-         if(a == 0xAB){
-            output_high(pin_a0);
-         } else {
-            putc(a);
-            putc(0);
-         }
+         readPacket(a, NULL);
+         putc(a[0]);
+         putc(a[1]);
+         putc(a[2]);
+         putc(a[3]);
+         putc(0);
       } else {
          putc(0x11);
          putc(0x00);
@@ -93,7 +101,7 @@ void init()
    setup_adc(ADC_OFF);
    setup_spi(SPI_SS_DISABLED);
    setup_wdt(WDT_OFF);
-   setup_timer_0(RTCC_INTERNAL);
+   setup_timer_0(RTCC_INTERNAL|RTCC_DIV_2);
    setup_timer_1(T1_DISABLED);
    setup_timer_2(T2_DISABLED,0,1);
    setup_comparator(NC_NC_NC_NC);
