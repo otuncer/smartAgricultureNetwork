@@ -11,7 +11,6 @@ void main()
 {
    int8 a[4];
    int8 b[4];
-   int1 mybool;
 
    init();
   
@@ -58,35 +57,28 @@ void main()
 
    //NETWORK TESTER
 #if MODULE_ID==0 //master node
-   a[0]=0x01;
-   a[1]=0x23;
-   a[2]=0x45;
-   a[3]=0x67;
    while(1) {
-      mybool = sendPacket(b, 2, a);
-      if(mybool){
-         putc(a[0]);
-         putc(a[1]);
-         putc(a[2]);
-         putc(a[3]);
-      } else {
-         putc(0x00);
-      }
-      delay_ms(500);
-   }
-#else
-   while(1) {
-      a[0]=0x89;
-      a[1]=0xAB;
-      a[2]=0xCD;
-      a[3]=0xEF;
       RFM22Brxon();
       while(input(NIRQ));
       readPacket(b, a);
+      putc(b[0]);
+      putc(b[1]);
+      putc(b[2]);
+      putc(b[3]);
    }
-
+#else
+   a[0]=MODULE_ID;
+   a[1]=MODULE_ID;
+   a[2]=MODULE_ID;
+   a[3]=MODULE_ID;
+   while(1) {
+      sendPacket(a, 0, b); //send to master node
+      output_high(pin_a0);
+      delay_ms(1000);
+      output_low(pin_a0);
+      delay_ms(1000);
+   }
 #endif
-   
 }
 
 void init()
