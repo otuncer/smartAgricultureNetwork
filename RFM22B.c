@@ -142,4 +142,6 @@ void RFM22Bsetup()
 
    RFM22BtoReady();
    RFM22BclearFlags();
+   
+   srand(MODULE_ID); // random number generator
 }

@@ -20,33 +20,48 @@ void sendPacket(int8 *msg, int8 destAddr)
 int1 sendPacket(int8 *msg, int8 destAddr, int8* ack)
 {
    int8 timer;
-   sendPacket(msg, destAddr);
+   int8 counter;
+   int1 ackReceived = 0;
    
-   //wait until ACK for timer0 loop 
-   RFM22Brxon();  
-   timer = get_timer0() - 1;
-   while(input(NIRQ) && timer!=get_timer0());
+   for(counter = 5; counter > 0 && ackReceived == 0; counter--) {
+      sendPacket(msg, destAddr);
+      
+      //wait until ACK or timer0 loop 
+      RFM22Brxon();
+      timer = get_timer0() - 1;
+      while(input(NIRQ) && timer!=get_timer0());
+      
+      ackReceived = !input(NIRQ);
+      if(!ackReceived){
+         delay_ms(rand()%50 * 100);
+      }
+   }   
    
-   if(!input(NIRQ)) { //valid packet received
+   if(ackReceived) { //valid packet received
       readPacket(ack, NULL);
       RFM22BclearFlags();
-      return 1;
-   } else {
-      return 0;
    }
    RFM22BtoReady();
+   return ackReceived;
 }
 
-void readPacket(int8 *msg, int8 *ack)
+int1 readPacket(int8 *msg, int8 *ack)
 {
     int8 srcAddr;
-    RFM22Breadfifo(msg);
-
-    if(ack != NULL){
-        srcAddr = RFM22BgetSourceAddr();
-        sendPacket(ack, srcAddr);
+    if(input(NIRQ)){
+      return 0;
+    } else {
+       RFM22Breadfifo(msg);
+   
+       if(ack != NULL){
+           srcAddr = RFM22BgetSourceAddr();
+           sendPacket(ack, srcAddr);
+       }
+   
+       RFM22BclearFlags();
+       RFM22BtoReady();
+       
+       return 1;
     }
-
-    RFM22BclearFlags();
-    RFM22BtoReady();
 }
+

@@ -41,7 +41,7 @@ void main()
       output_low(pin_a0);
       delay_ms(100);
    }*/
-   /* RS232 TESTER
+   /* //RS232 TESTER
    while(1){
       putc(0xAB);
       delay_ms(1000);
@@ -55,7 +55,8 @@ void main()
          delay_ms(1000);
       }
    }*/
-  
+
+   //NETWORK TESTER
 #if MODULE_ID==0 //master node
    a[0]=0x01;
    a[1]=0x23;
@@ -98,7 +99,7 @@ void init()
    setup_adc(ADC_OFF);
    setup_spi(SPI_SS_DISABLED);
    setup_wdt(WDT_OFF);
-   setup_timer_0(RTCC_INTERNAL|RTCC_DIV_2);
+   setup_timer_0(RTCC_INTERNAL|RTCC_DIV_8);
    setup_timer_1(T1_DISABLED);
    setup_timer_2(T2_DISABLED,0,1);
    setup_comparator(NC_NC_NC_NC);
